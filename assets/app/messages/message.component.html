@@ -1,0 +1,20 @@
+
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <input type="text" [(ngModel)]="message.content"/>
+      <article class="panel panel-default" [ngStyle]="{backgroundColor: color}" (mouseenter)="color = 'blue'" (mouseleave)="color = 'lightgreen'">
+        <div class="panel-body">
+           {{message.content}}
+        </div>
+        <footer class="panel-footer">
+            <div class="author">
+              {{message.username}}
+            </div>
+            <div class="config">
+               <a href="#" (click)="onEdit()">Edit</a>
+               <a href="#">Delete</a>
+            </div>
+        </footer>
+      </article>
+    </div>
+  </div>
