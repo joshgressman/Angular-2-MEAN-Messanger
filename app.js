@@ -6,7 +6,10 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
+//routing files
 var appRoutes = require('./routes/app');
+var messageRoutes = require('./routes/message');
+
 
 var app = express();
 mongoose.connect('localhost:27017/node-angular'); //connects to mongoose node-angular name of DB
@@ -29,7 +32,10 @@ app.use(function (req, res, next) {
     next();
 });
 
+//using the routes from the routes file
+app.use('/message', messageRoutes); //message routes need to come first
 app.use('/', appRoutes);
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
