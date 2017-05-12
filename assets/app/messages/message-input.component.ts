@@ -20,6 +20,10 @@ export class MessageInputComponent implements OnInit{
    onSubmit(form: NgForm){ //ng form creates an object from angular
      if(this.message){ //edits an exhisting message
          this.message.content = form.value.content;
+         this.messageService.updateMessage(this.message)
+         .subscribe(
+            result => console.log(result)
+         );
          this.message = null;
      } else { //creates a new message
        const message = new Message(form.value.content, 'josh'); //new message created from the message model // within the Angualr object

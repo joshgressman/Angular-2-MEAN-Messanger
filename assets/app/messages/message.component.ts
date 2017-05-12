@@ -10,7 +10,8 @@ import { MessageService } from './message.service';
 
 export class MessageComponent {
     color = 'lightgreen';
-    @Input() message: Message; //@Input allows this to be used elsewhere is used in the app.comp.html for property binding
+    @Input() message: Message; //@Input allows this property to be binded in other components
+    //and receive data
 
 
     constructor(private messageService: MessageService ){
@@ -22,6 +23,9 @@ export class MessageComponent {
     }
 
     onDelete(){
-      this.messageService.deleteMessage(this.message);
+      this.messageService.deleteMessage(this.message)
+      .subscribe(
+        result => console.log(result)
+      );
     }
 }
