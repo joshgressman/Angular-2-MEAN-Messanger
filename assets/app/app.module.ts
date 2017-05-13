@@ -15,7 +15,7 @@ import { LogoutComponent } from "./auth/logout.component";
 import { SigninComponent } from "./auth/signin.component";
 import { SignupComponent } from "./auth/signup.component";
 import { ReactiveFormsModule } from "@angular/forms";
-
+import { AuthService } from './auth/auth.service';
 
 @NgModule({
     declarations:[
@@ -31,6 +31,7 @@ import { ReactiveFormsModule } from "@angular/forms";
         SignupComponent
     ],
     imports: [BrowserModule, FormsModule, routing, ReactiveFormsModule, HttpModule],
+    providers: [AuthService], //Makes accessible across whole app
     bootstrap: [AppComponent]
 })
 export class AppModule {
