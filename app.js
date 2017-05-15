@@ -33,6 +33,7 @@ app.use(function (req, res, next) {
 });
 
 //using the routes from the routes file
+
 app.use('/message', messageRoutes); //message routes need to come first
 app.use('/user', userRoutes);
 app.use('/', appRoutes);
