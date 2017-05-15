@@ -16,4 +16,15 @@ export class AuthService {
     .map((response: Response) => response.json())
     .catch((error: Response) => Observable.throw(error.json()));
   }
+
+  signin(user: User){
+    const body = JSON.stringify(user); //this sets up the data being passed
+    console.log('body', body);
+    const headers = new Headers({'Content-Type': 'application/json'}); //informs backend that it's getting JSON data
+    return this.http.post('http://localhost:3000/user/signin', body, {headers: headers})  //body containts the data being passed
+    .map((response: Response) => response.json())
+    .catch((error: Response) => Observable.throw(error.json()));
+  }
+
+
 }
