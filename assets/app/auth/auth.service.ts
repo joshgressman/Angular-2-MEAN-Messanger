@@ -30,4 +30,9 @@ export class AuthService {
     localStorage.clear();
   }
 
+  //checks if the user is logged in via local storage
+  isLoggedIn(){
+    return localStorage.getItem('token') !== null;
+  }
+
 }

@@ -19,7 +19,10 @@ export class MessageService {
   addMessage(message: Message){
       const body = JSON.stringify(message); //changes message to JSON
       const headers = new Headers({'Content-Type': 'application/json'});
-      return this.http.post('http://localhost:3000/message', body, {headers: headers}) //this sets up an observable route to app.js then to DB
+      //gets the token from localStorage and stores in a varable
+      const token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token'):'';
+      //Add the token to the URL
+      return this.http.post('http://localhost:3000/message' + token, body, {headers: headers}) //this sets up an observable route to app.js then to DB
       .map((response: Response) => {
         const result = response.json();
         const message = new Message(result.obj.content, 'dummy', result.obj._id, null);
@@ -53,14 +56,18 @@ export class MessageService {
   updateMessage(message: Message){
     const body = JSON.stringify(message); //changes message to JSON
     const headers = new Headers({'Content-Type': 'application/json'});
-    return this.http.patch('http://localhost:3000/message/' + message.messageId, body, {headers: headers}) //this sets up an observable route to app.js then to DB
+    //gets the token from localStorage and stores in a varable
+    const token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token'):'';
+    return this.http.patch('http://localhost:3000/message/' + message.messageId + token, body, {headers: headers}) //this sets up an observable route to app.js then to DB
     .map((response: Response) => response.json()) //transforms the data from the server
     .catch((error: Response) => Observable.throw(error.json()));
   }
 
   deleteMessage(message: Message){
     this.messages.splice(this.messages.indexOf(message), 1);
-    return this.http.delete('http://localhost:3000/message/' + message.messageId) //this sets up an observable route to app.js then to DB
+    //gets the token from localStorage and stores in a varable
+    const token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token'):'';
+    return this.http.delete('http://localhost:3000/message/' + message.messageId + token) //this sets up an observable route to app.js then to DB
     .map((response: Response) => response.json()) //transforms the data from the server
     .catch((error: Response) => Observable.throw(error.json()));
   }
