@@ -6,10 +6,6 @@ import { AppComponent } from "./app.component";
 import { AuthenticationComponent } from "./auth/authentication.component";
 import { HeaderComponent } from "./header.component";
 import { routing } from "./routing/app.routing";
-import { LogoutComponent } from "./auth/logout.component";
-import { SigninComponent } from "./auth/signin.component";
-import { SignupComponent } from "./auth/signup.component";
-import { ReactiveFormsModule } from "@angular/forms";
 import { AuthService } from './auth/auth.service';
 import { ErrorComponent } from './errors/error.component';
 import { ErrorService } from './errors/error.service';
@@ -20,12 +16,9 @@ import { MessageModule } from './messages/message.module';
         AppComponent,
         AuthenticationComponent,
         HeaderComponent,
-        LogoutComponent,
-        SigninComponent,
-        SignupComponent,
         ErrorComponent
     ],
-    imports: [BrowserModule, routing, ReactiveFormsModule, HttpModule, MessageModule],
+    imports: [BrowserModule, routing,HttpModule, MessageModule],
     providers: [AuthService, ErrorService], //Makes accessible across whole app
     bootstrap: [AppComponent]
 })
