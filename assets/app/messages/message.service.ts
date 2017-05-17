@@ -3,7 +3,7 @@ import { Http, Response, Headers } from '@angular/http';
 import { Injectable, EventEmitter } from '@angular/core';
 import 'rxjs/Rx'; //Angular third pary library used with the .map() method
 import { Observable } from 'rxjs';
-
+import { ErrorService } from '../errors/error.service';
 import { Message } from './message.model';
 //This is a service, methods / data in the service can ber injected into components for use
 //Message info is based on the Message model for blueprinted data for a Message.
@@ -14,7 +14,7 @@ export class MessageService {
   private messages: Message[] = [];
   messageIsEdit = new EventEmitter<Message>();
 
-  constructor(private http: Http){}
+  constructor(private http: Http, private errorService: ErrorService){}
 
   addMessage(message: Message){
       const body = JSON.stringify(message); //changes message to JSON
@@ -29,7 +29,10 @@ export class MessageService {
         this.messages.push(message);
         return message;
       }) //transforms the data from the server
-      .catch((error: Response) => Observable.throw(error.json()));
+      .catch((error: Response) => {
+        this.errorService.handleError(error.json());
+        return Observable.throw(error.json());
+      });
   } //you must subscribe to this observable in order to send / receive requests
 
 
@@ -46,7 +49,10 @@ export class MessageService {
       this.messages = transformedMessages;
       return transformedMessages;
     })
-    .catch((error: Response) => Observable.throw(error.json()));
+    .catch((error: Response) => {
+      this.errorService.handleError(error.json());
+      return Observable.throw(error.json());
+    });
   }
 
   editMessage(message: Message){
@@ -60,7 +66,10 @@ export class MessageService {
     const token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token'):'';
     return this.http.patch('http://localhost:3000/message/' + message.messageId + token, body, {headers: headers}) //this sets up an observable route to app.js then to DB
     .map((response: Response) => response.json()) //transforms the data from the server
-    .catch((error: Response) => Observable.throw(error.json()));
+    .catch((error: Response) => {
+      this.errorService.handleError(error.json());
+      return Observable.throw(error.json());
+    });
   }
 
   deleteMessage(message: Message){
@@ -69,6 +78,9 @@ export class MessageService {
     const token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token'):'';
     return this.http.delete('http://localhost:3000/message/' + message.messageId + token) //this sets up an observable route to app.js then to DB
     .map((response: Response) => response.json()) //transforms the data from the server
-    .catch((error: Response) => Observable.throw(error.json()));
+    .catch((error: Response) => {
+      this.errorService.handleError(error.json());
+      return Observable.throw(error.json());
+    });
   }
 }
