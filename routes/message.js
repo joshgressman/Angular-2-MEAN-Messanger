@@ -9,6 +9,7 @@ var Message = require('../models/message');
 
 router.get('/', function(req,res, next){
   Message.find()
+   .populate('user', 'firstName') //gets the user info from the user Scheme
    .exec(function(err, messages){
      if(err){
        return res.status(500).json({
@@ -69,6 +70,7 @@ router.post('/', function (req, res, next) {
 
 //change exhisting data with patch
 router.patch('/:id', function(req, res, next){
+  var decoded = jwt.decode(req.query.token); //checks token
   Message.findById(req.params.id, function(err,message){
       if(err){
         return res.status(500).json({
@@ -81,6 +83,12 @@ router.patch('/:id', function(req, res, next){
           title: 'No message found',
           error: {message: 'Message not found'}
         });
+      }
+      if(message.user != decoded.user._id){
+          return res.status(401).json({
+            title: "Not Authenticated User",
+            error: {message: 'users do not match'}
+          });
       }
       message.content = req.body.content;
       message.save(function(err, result){
@@ -113,6 +121,12 @@ router.delete('/:id', function(req, res, next){
           title: 'No message found',
           error: {message: 'Message not found'}
         });
+      }
+      if(message.user != decoded.user._id){
+          return res.status(401).json({
+            title: "Not Authenticated User",
+            error: {message: 'users do not match'}
+          });
       }
       message.remove(function(err, result){
         if(err){
